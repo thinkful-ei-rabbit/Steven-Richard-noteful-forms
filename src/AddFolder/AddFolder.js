@@ -20,12 +20,19 @@ export default class AddFolder extends React.Component {
       },
       body: JSON.stringify({ name: name }),
     }).then((res) => {
+        if (res.ok) {
         return res.json();
+        } else {
+            Promise.reject(res.message)
+        }
     })
     .then((folder) => {
       this.context.addFolder(folder);
       this.props.history.goBack();
-    });
+    })
+    .catch((error) => {
+      console.log(error)
+    })
   }
 
   render() {
