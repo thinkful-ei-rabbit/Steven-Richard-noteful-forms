@@ -38,6 +38,7 @@ export default class Note extends React.Component {
   }
 
   render() {
+    throw new Error('Oh no')
     const { name, id, modified } = this.props
     return (
       <div className='Note'>
