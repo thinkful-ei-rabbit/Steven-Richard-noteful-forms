@@ -54,6 +54,14 @@ export default class AddNote extends React.Component {
       
   }
 
+  validateName() {
+    const name = this.nameInput.value.trim();
+    if (name.length === 0) {
+      return "Name is required";
+    };
+  };
+
+
   render() {
     const { folders = [] } = this.context;
     const options = folders.map((folder, idx) => {
