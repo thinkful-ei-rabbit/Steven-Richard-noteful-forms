@@ -1,6 +1,7 @@
 import React from "react";
 import config from "../config";
 import ApiContext from "../ApiContext";
+import './AddNote.css';
 
 export default class AddNote extends React.Component {
   static contextType = ApiContext;
@@ -119,43 +120,59 @@ export default class AddNote extends React.Component {
 
     return (
       <form className="AddNote" onSubmit={(event) => this.handleSubmit(event)}>
-        <label htmlFor="name">
-          <input
-            type="text"
-            name="name"
-            className="AddNoteInput"
-            ref={this.nameInput}
-            onChange={(e) => this.handleName(e)}
-          />
-        </label>
-        <select
-          name="folder"
-          id="folders"
-          aria-label="Folder Selections"
-          onChange={(e) => this.handleChange(e)}
-        >
-          <option value={'none'}>Select Folder</option>
-          {options}
-        </select>
-        <label htmlFor="content">
-          <input
-            type="textarea"
-            name="content"
-            className="AddNoteContent"
-            ref={this.contentInput}
-            onChange={(e) => this.handleContent(e)}
-          />
-        </label>
-        <p>{this.state.validate.touch && this.validateName()}</p>
-        <p>{this.state.validate.touch && this.validateContent()}</p>
-        <p>{this.state.validate.touch && this.validateSelect()}</p>
-        <button
-          type="submit"
-          className="submitButton"
-          disabled={this.validateName() || this.validateContent() || this.validateSelect()}
-        >
-          Submit
-        </button>
+          <div className='row'>
+            <div className='left'>
+                <label htmlFor="name"><h4>Note Name</h4>
+                <input
+                    type="text"
+                    name="name"
+                    className="AddNoteInput"
+                    ref={this.nameInput}
+                    onChange={(e) => this.handleName(e)}
+                />
+                </label>
+                <h3>{this.state.validate.touch && this.validateName()}</h3>
+                <br />
+                <br />
+                <label htmlFor="message"><h4>Note Content</h4>
+                <input
+                    type="textarea"
+                    name="message"
+                    className="AddNoteContent"
+                    ref={this.contentInput}
+                    onChange={(e) => this.handleContent(e)}
+                />
+                </label>
+                <h3>{this.state.validate.touch && this.validateContent()}</h3>
+            </div>
+
+            <div className='right'>
+                <select
+                name="folder"
+                id="folders"
+                aria-label="Folder Selections"
+                className="FolderSelection"
+                onChange={(e) => this.handleChange(e)}
+                >
+                <option value={'none'}>Select Folder</option>
+                {options}
+                </select>
+                <h3 className='bug'>{this.state.validate.touch && this.validateSelect()}</h3>
+                <br />
+                <br />
+                <button
+                type="submit"
+                className="submitButton"
+                disabled={this.validateName() || this.validateContent() || this.validateSelect()}
+                >
+                Submit
+                </button>
+            </div>
+        </div>
+        <br />
+        <br />
+      
+
       </form>
     );
   }

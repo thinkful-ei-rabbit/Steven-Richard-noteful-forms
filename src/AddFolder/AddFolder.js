@@ -1,6 +1,7 @@
 import React from "react";
 import config from "../config";
 import ApiContext from "../ApiContext";
+import './AddFolder.css';
 
 export default class AddFolder extends React.Component {
   static contextType = ApiContext;
@@ -75,10 +76,13 @@ export default class AddFolder extends React.Component {
           />
         </label>
 
-        <p>{this.state.touch && this.validateName()}</p>
-        <button type="submit" className="submitButton" disabled={this.validateName()}>
+        <br />
+        <br />
+
+        <button type="submit" className="FolderSubmitButton" disabled={this.validateName()}>
           Submit
         </button>
+        <h3>{this.state.touch && this.validateName()}</h3>
       </form>
     );
   };
