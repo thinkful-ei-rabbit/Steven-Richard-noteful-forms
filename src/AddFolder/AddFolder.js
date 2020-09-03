@@ -5,9 +5,12 @@ import ApiContext from "../ApiContext";
 export default class AddFolder extends React.Component {
   static contextType = ApiContext;
 
-  state= {
+  state = {
     folderName: '',
-    touch: false
+    touched: {
+      name: false,
+      content: false,
+    }
   };
 
   constructor(props) {
@@ -24,42 +27,38 @@ export default class AddFolder extends React.Component {
         "content-type": "application/json",
       },
       body: JSON.stringify({ name: name }),
-    }).then((res) => {
+    })
+      .then((res) => {
         if (res.ok) {
-        return res.json();
+          return res.json();
         } else {
-            Promise.reject(res.message)
+          Promise.reject(res.message);
         }
-    })
-    .then((folder) => {
-      this.context.addFolder(folder);
-      this.props.history.goBack();
-    })
-    .catch((error) => {
-      console.log(error)
-    })
+      })
+      .then((folder) => {
+        this.context.addFolder(folder);
+        this.props.history.goBack();
+      })
+      .catch((error) => {
+        console.error({ error });
+      });
   }
 
   validateName() {
     const name = this.state.folderName.trim();
     if (!name) {
-      return 'A name for your note is required.';
+      return "A name for your note is required.";
     }
-    if (name.length === 0) {
-      return 'A name for your note is required.';
-    };
-  }; 
+  }
 
   handleChange = (e) => {
     this.setState({
       folderName: e.target.value,
-      touch: true
-    })
-    console.log(this.state.touch)
+      touch: true,
+    });
   };
 
   render() {
-    console.log(this.state.touch)
     return (
       <form
         className="AddFolder"
@@ -76,10 +75,14 @@ export default class AddFolder extends React.Component {
         </label>
 
         <p>{this.state.touch && this.validateName()}</p>
-        <button type="submit" className="submitButton" disabled={this.validateName()}>
+        <button
+          type="submit"
+          className="submitButton"
+          disabled={this.validateName()}
+        >
           Submit
         </button>
       </form>
     );
-  };
-};
+  }
+}

@@ -52,7 +52,7 @@ export default class AddNote extends React.Component {
         return note;
       })
       .catch((error) => {
-        console.log(error);
+        console.error({ error });
       });
   }
 
