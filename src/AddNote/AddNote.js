@@ -5,6 +5,11 @@ import ApiContext from "../ApiContext";
 export default class AddNote extends React.Component {
   static contextType = ApiContext;
   state = {
+    validate: {
+      noteName: "",
+      content: "",
+      touch: false,
+    },
     folderInput: "",
   };
 
@@ -36,31 +41,60 @@ export default class AddNote extends React.Component {
       }),
     })
       .then((res) => {
-          if (res.ok) {
-            return res.json();
-          } else {
-              Promise.reject(res.message)
-          }
-        
+        if (res.ok) {
+          return res.json();
+        } else {
+          Promise.reject(res.message);
+        }
       })
       .then((note) => {
         this.context.addNote(note);
         this.props.history.goBack();
-        return note
+        return note;
       })
       .catch((error) => {
-        console.log(error)
-      })
-      
+        console.log(error);
+      });
   }
 
   validateName() {
-    const name = this.nameInput.value.trim();
+    const name = this.state.validate.noteName;
+    if (!name) {
+      return "A name for your note is required.";
+    }
     if (name.length === 0) {
-      return "Name is required";
-    };
+      return "A name for your note is required.";
+    }
+  }
+
+  validateContent() {
+    const content = this.state.validate.content;
+    if (!content) {
+      return "Content for your note is required.";
+    }
+    if (content.length === 0) {
+      return "Content for your note is required.";
+    }
+  }
+
+  handleName = (e) => {
+    console.log(this.state.noteName)
+    this.setState({
+      validate: {
+        noteName: e.target.value,
+        touch: true,
+      },
+    });
   };
 
+  handleContent = (e) => {
+    this.setState({
+      validate: {
+        content: e.target.value,
+        touch: true,
+      },
+    });
+  };
 
   render() {
     const { folders = [] } = this.context;
@@ -85,6 +119,7 @@ export default class AddNote extends React.Component {
             name="name"
             className="AddNoteInput"
             ref={this.nameInput}
+            onChange={(e) => this.handleName(e)}
           />
         </label>
         <select
@@ -102,9 +137,16 @@ export default class AddNote extends React.Component {
             name="content"
             className="AddNoteContent"
             ref={this.contentInput}
+            onChange={(e) => this.handleContent(e)}
           />
         </label>
-        <button type="submit" className="submitButton">
+        <p>{this.state.validate.touch && this.validateName()}</p>
+        <p>{this.state.validate.touch && this.validateContent()}</p>
+        <button
+          type="submit"
+          className="submitButton"
+          disabled={this.validateName() || this.validateContent()}
+        >
           Submit
         </button>
       </form>
