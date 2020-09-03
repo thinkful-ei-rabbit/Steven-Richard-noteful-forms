@@ -171,8 +171,6 @@ export default class AddNote extends React.Component {
         </div>
         <br />
         <br />
-      
-
       </form>
     );
   }
