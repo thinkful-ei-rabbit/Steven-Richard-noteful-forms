@@ -6,6 +6,7 @@ export default class AddFolder extends React.Component {
   static contextType = ApiContext;
 
   state= {
+    folderName: '',
     touch: false
   };
 
@@ -40,14 +41,20 @@ export default class AddFolder extends React.Component {
   }
 
   validateName() {
-    const name = this.nameInput.value;
+    const name = this.state.folderName.trim();
+    if (!name) {
+      return 'A name for your note is required.';
+    }
     if (name.length === 0) {
-      return "Name is required";
+      return 'A name for your note is required.';
     };
-  };
+  }; 
 
   handleChange = (e) => {
-    this.setState({touch: true})
+    this.setState({
+      folderName: e.target.value,
+      touch: true
+    })
     console.log(this.state.touch)
   };
 
@@ -66,8 +73,9 @@ export default class AddFolder extends React.Component {
             ref={this.nameInput}
             onChange={(e) => this.handleChange(e)}
           />
-          {this.state.touch && this.validateName()}
         </label>
+
+        <p>{this.state.touch && this.validateName()}</p>
         <button type="submit" className="submitButton" disabled={this.validateName()}>
           Submit
         </button>
