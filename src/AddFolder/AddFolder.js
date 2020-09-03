@@ -5,6 +5,10 @@ import ApiContext from "../ApiContext";
 export default class AddFolder extends React.Component {
   static contextType = ApiContext;
 
+  state= {
+    touch: false
+  };
+
   constructor(props) {
     super(props);
     this.nameInput = React.createRef();
@@ -35,7 +39,20 @@ export default class AddFolder extends React.Component {
     })
   }
 
+  validateName() {
+    const name = this.nameInput.value;
+    if (name.length === 0) {
+      return "Name is required";
+    };
+  };
+
+  handleChange = (e) => {
+    this.setState({touch: true})
+    console.log(this.state.touch)
+  };
+
   render() {
+    console.log(this.state.touch)
     return (
       <form
         className="AddFolder"
@@ -47,12 +64,14 @@ export default class AddFolder extends React.Component {
             name="name"
             className="AddFolderInput"
             ref={this.nameInput}
+            onChange={(e) => this.handleChange(e)}
           />
+          {this.state.touch && this.validateName()}
         </label>
-        <button type="submit" className="submitButton">
+        <button type="submit" className="submitButton" disabled={this.validateName()}>
           Submit
         </button>
       </form>
     );
-  }
-}
+  };
+};

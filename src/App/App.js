@@ -9,7 +9,7 @@ import AddFolder from '../AddFolder/AddFolder';
 import AddNote from '../AddNote/AddNote';
 import ApiContext from '../ApiContext';
 import config from '../config';
-import ErrorMaster from '../ErrorMaster';
+import ErrorMaster from '../ErrorBoundaries/ErrorMaster';
 import './App.css';
 
 class App extends Component {
@@ -48,6 +48,7 @@ class App extends Component {
     renderNavRoutes() {
         return (
             <>
+             <ErrorMaster>
                 {['/', '/folder/:folderId'].map(path => (
                     <Route
                         exact
@@ -59,6 +60,7 @@ class App extends Component {
                 <Route path="/note/:noteId" component={NotePageNav} />
                 <Route path="/add-folder" component={NotePageNav} />
                 <Route path="/add-note" component={NotePageNav} />
+            </ErrorMaster>
             </>
         );
     }
