@@ -36,12 +36,22 @@ export default class AddNote extends React.Component {
       }),
     })
       .then((res) => {
-        return res.json();
+          if (res.ok) {
+            return res.json();
+          } else {
+              Promise.reject(res.message)
+          }
+        
       })
       .then((note) => {
         this.context.addNote(note);
         this.props.history.goBack();
-      });
+        return note
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+      
   }
 
   render() {
