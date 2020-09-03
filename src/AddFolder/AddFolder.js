@@ -40,15 +40,16 @@ export default class AddFolder extends React.Component {
   }
 
   validateName() {
-    const name = this.nameInput.value;
-    if (name.length === 0) {
-      return "Name is required";
-    };
+    console.log(this.nameInput.current.value)
+    const name = this.nameInput.current.value;
+    if (name.length < 3) {
+      console.log("Name is required");
+    } else if(name.length > 3)
+    this.handleSubmit();
   };
 
-  handleChange = (e) => {
-    this.setState({touch: true})
-    console.log(this.state.touch)
+  handleChange = () => {
+    this.validateName()
   };
 
   render() {
@@ -56,7 +57,7 @@ export default class AddFolder extends React.Component {
     return (
       <form
         className="AddFolder"
-        onSubmit={(event) => this.handleSubmit(event)}
+        onSubmit={(event) => this.validateName(event)}
       >
         <label htmlFor="name">
           <input
@@ -64,11 +65,10 @@ export default class AddFolder extends React.Component {
             name="name"
             className="AddFolderInput"
             ref={this.nameInput}
-            onChange={(e) => this.handleChange(e)}
+            onChange={(e) => this.handleSubmit(e)}
           />
-          {this.state.touch && this.validateName()}
         </label>
-        <button type="submit" className="submitButton" disabled={this.validateName()}>
+        <button type="submit" className="submitButton">
           Submit
         </button>
       </form>
