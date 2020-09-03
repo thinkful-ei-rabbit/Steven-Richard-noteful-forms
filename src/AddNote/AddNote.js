@@ -25,7 +25,6 @@ export default class AddNote extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    console.log(this.contentInput);
     const name = this.nameInput.current.value;
     const id = this.state.folderInput;
     const content = this.contentInput.current.value;
@@ -57,6 +56,12 @@ export default class AddNote extends React.Component {
       });
   }
 
+  validateSelect = () => {
+    if (this.state.folderInput === '' || this.state.folderInput === 'none') {
+      return 'Please select a folder.'
+    }
+  }
+
   validateName = () => {
     const name = this.state.validate.noteName;
     if (!name) {
@@ -68,7 +73,6 @@ export default class AddNote extends React.Component {
   }
 
   validateContent = () => {
-    console.log(this.state.validate.content)
     const content = this.state.validate.content;
     if (!content) {
       return "Content for your note is required.";
@@ -129,9 +133,8 @@ export default class AddNote extends React.Component {
           id="folders"
           aria-label="Folder Selections"
           onChange={(e) => this.handleChange(e)}
-          disabled={}
         >
-          <option value={"none"}>Select Folder</option>
+          <option value={'none'}>Select Folder</option>
           {options}
         </select>
         <label htmlFor="content">
@@ -145,10 +148,11 @@ export default class AddNote extends React.Component {
         </label>
         <p>{this.state.validate.touch && this.validateName()}</p>
         <p>{this.state.validate.touch && this.validateContent()}</p>
+        <p>{this.state.validate.touch && this.validateSelect()}</p>
         <button
           type="submit"
           className="submitButton"
-          disabled={this.validateName() || this.validateContent()}
+          disabled={this.validateName() || this.validateContent() || this.validateSelect()}
         >
           Submit
         </button>
