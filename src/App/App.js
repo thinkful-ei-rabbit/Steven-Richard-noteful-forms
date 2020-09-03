@@ -84,7 +84,8 @@ class App extends Component {
         const value = {
             notes: this.state.notes,
             folders: this.state.folders,
-            deleteNote: this.handleDeleteNote
+            deleteNote: this.handleDeleteNote,
+            didMount: this.componentDidMount,
         };
         return (
             <ApiContext.Provider value={value}>

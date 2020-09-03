@@ -1,6 +1,10 @@
-import React from 'react'
+import React from 'react';
+import config from '../config';
+import ApiContext from '../ApiContext';
 
 export default class AddFolder extends React.Component {
+    static contextType = ApiContext;
+
     constructor(props) {
         super(props);
         this.nameInput = React.createRef();
@@ -9,12 +13,16 @@ export default class AddFolder extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
         const name = this.nameInput.current.value;
-        console.log('Name: ', name)
+        fetch('http://localhost:9090/folders', {
+            method: 'POST',
+            headers: {
+            'content-type': 'application/json'
+            },
+            body: {'name': name}
+            }
+        )
+        console.log(this.context.didMount);
     };
-
-    // state={
-    //     name: '',
-    // };
 
     render() {
         return (
