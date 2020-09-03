@@ -13,15 +13,17 @@ export default class AddFolder extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
         const name = this.nameInput.current.value;
-        fetch('http://localhost:9090/folders', {
+        fetch(`${config.API_ENDPOINT}/folders`, {
             method: 'POST',
             headers: {
             'content-type': 'application/json'
             },
-            body: {'name': name}
+            body: JSON.stringify({ name: name })
             }
-        )
-        console.log(this.context.didMount);
+        ).then(() => {
+            this.context.didMount();
+            this.props.history.goBack();
+        })
     };
 
     render() {
