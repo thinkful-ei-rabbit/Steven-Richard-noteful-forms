@@ -6,11 +6,11 @@ export default class AddNote extends React.Component {
   static contextType = ApiContext;
   state = {
     validate: {
-      noteName: "",
-      content: "",
+      noteName: '',
+      content: '',
       touch: false,
     },
-    folderInput: "",
+    folderInput: '',
   };
 
   constructor(props) {
@@ -57,7 +57,7 @@ export default class AddNote extends React.Component {
       });
   }
 
-  validateName() {
+  validateName = () => {
     const name = this.state.validate.noteName;
     if (!name) {
       return "A name for your note is required.";
@@ -67,7 +67,8 @@ export default class AddNote extends React.Component {
     }
   }
 
-  validateContent() {
+  validateContent = () => {
+    console.log(this.state.validate.content)
     const content = this.state.validate.content;
     if (!content) {
       return "Content for your note is required.";
@@ -78,10 +79,10 @@ export default class AddNote extends React.Component {
   }
 
   handleName = (e) => {
-    console.log(this.state.noteName)
     this.setState({
       validate: {
         noteName: e.target.value,
+        content: this.state.validate.content,
         touch: true,
       },
     });
@@ -90,6 +91,7 @@ export default class AddNote extends React.Component {
   handleContent = (e) => {
     this.setState({
       validate: {
+        noteName: this.state.validate.noteName,
         content: e.target.value,
         touch: true,
       },
@@ -128,7 +130,7 @@ export default class AddNote extends React.Component {
           aria-label="Folder Selections"
           onChange={(e) => this.handleChange(e)}
         >
-          <option value={"null"}>Select Folder</option>
+          <option value={"none"}>Select Folder</option>
           {options}
         </select>
         <label htmlFor="content">
