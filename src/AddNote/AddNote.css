@@ -1,0 +1,71 @@
+h3 {
+    color: azure;
+}
+
+h4 {
+    color: azure;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+form {
+    margin-top: 8px;
+    margin-left: 12px;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+}
+
+.left {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
+
+.right {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    margin-left: -32em;
+    margin-top: 4.2em;
+}
+
+.AddNoteInput {
+    height: 3em;
+    width: 12em;
+}
+
+.AddNoteContent {
+    height: 15em;
+    width: 24em;
+}
+
+.FolderSelection {
+    height: 3em;
+    width: 12em;
+    margin-left: 4em;
+    padding-left: 2em;
+    font-weight: bold;
+}
+
+button.submitButton {
+    height: 8em;
+    width: 8em;
+    margin-top: 8em;
+    margin-left: 6em;
+    background-color: #cacaca;
+    border-radius: 30em;
+    border: 0;
+    font-weight: bold;
+
+  }
+
+h3 {
+    color: azure;
+}
+
+.bug {
+    margin-left: 2em;
+}
