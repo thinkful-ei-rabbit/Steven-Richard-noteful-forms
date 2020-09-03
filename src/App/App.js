@@ -9,6 +9,7 @@ import AddFolder from '../AddFolder/AddFolder';
 import AddNote from '../AddNote/AddNote';
 import ApiContext from '../ApiContext';
 import config from '../config';
+import ErrorMaster from '../ErrorMaster';
 import './App.css';
 
 class App extends Component {
@@ -65,17 +66,19 @@ class App extends Component {
     renderMainRoutes() {
         return (
             <>
-                {['/', '/folder/:folderId'].map(path => (
-                    <Route
-                        exact
-                        key={path}
-                        path={path}
-                        component={NoteListMain}
-                    />
-                ))}
-                <Route path="/note/:noteId" component={NotePageMain} />
-                <Route path="/add-folder" component={AddFolder} />
-                <Route path="/add-note" component={AddNote} />
+                <ErrorMaster>
+                    {['/', '/folder/:folderId'].map(path => (
+                        <Route
+                            exact
+                            key={path}
+                            path={path}
+                            component={NoteListMain}
+                        />
+                    ))}
+                    <Route path="/note/:noteId" component={NotePageMain} />
+                    <Route path="/add-folder" component={AddFolder} />
+                    <Route path="/add-note" component={AddNote} />
+                </ErrorMaster>
             </>
         );
     }
