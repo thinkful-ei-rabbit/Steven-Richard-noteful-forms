@@ -1,10 +1,10 @@
-import React from "react";
+import React from 'react';
 
 export default class ErrorMaster extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      hasError: false,
+      hasError: false
     };
   }
   static getDerivedStateFromError(error) {

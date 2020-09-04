@@ -1,6 +1,7 @@
-import React from "react";
-import config from "../config";
-import ApiContext from "../ApiContext";
+import React from 'react';
+import config from '../config';
+import ApiContext from '../ApiContext';
+import './AddNote.css';
 
 export default class AddNote extends React.Component {
   static contextType = ApiContext;
@@ -8,9 +9,13 @@ export default class AddNote extends React.Component {
     validate: {
       noteName: '',
       content: '',
-      touch: false,
+      touched: {
+        noteName: false,
+        select: false,
+        content: false
+      }
     },
-    folderInput: '',
+    folderInput: ''
   };
 
   constructor(props) {
@@ -19,8 +24,20 @@ export default class AddNote extends React.Component {
     this.contentInput = React.createRef();
   }
 
-  handleChange = (e) => {
-    this.setState({ folderInput: e.target.value });
+  handleChange = e => {
+    const state = this.state.validate.touched;
+    this.setState({
+      validate: {
+        noteName: this.state.validate.noteName,
+        content: this.state.validate.content,
+        touched: {
+          noteName: state.noteName,
+          select: true,
+          content: state.content
+        }
+      },
+      folderInput: e.target.value
+    });
   };
 
   handleSubmit(event) {
@@ -29,76 +46,80 @@ export default class AddNote extends React.Component {
     const id = this.state.folderInput;
     const content = this.contentInput.current.value;
     fetch(`${config.API_ENDPOINT}/notes`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "content-type": "application/json",
+        'content-type': 'application/json'
       },
       body: JSON.stringify({
         name: name,
         folderId: id,
-        content: content,
-      }),
+        content: content
+      })
     })
-      .then((res) => {
+      .then(res => {
         if (res.ok) {
           return res.json();
         } else {
           Promise.reject(res.message);
         }
       })
-      .then((note) => {
+      .then(note => {
         this.context.addNote(note);
         this.props.history.goBack();
         return note;
       })
-      .catch((error) => {
+      .catch(error => {
         console.error({ error });
       });
   }
 
   validateSelect = () => {
     if (this.state.folderInput === '' || this.state.folderInput === 'none') {
-      return 'Please select a folder.'
+      return 'Please select a folder.';
     }
-  }
+  };
 
   validateName = () => {
     const name = this.state.validate.noteName;
     if (!name) {
-      return "A name for your note is required.";
+      return 'A name for your note is required.';
     }
-    if (name.length === 0) {
-      return "A name for your note is required.";
-    }
-  }
+  };
 
   validateContent = () => {
     const content = this.state.validate.content;
     if (!content) {
-      return "Content for your note is required.";
+      return 'Content for your note is required.';
     }
-    if (content.length === 0) {
-      return "Content for your note is required.";
-    }
-  }
+  };
 
-  handleName = (e) => {
+  handleName = e => {
+    const state = this.state.validate.touched;
     this.setState({
       validate: {
         noteName: e.target.value,
         content: this.state.validate.content,
-        touch: true,
-      },
+        touched: {
+          noteName: true,
+          select: state.select,
+          content: state.content
+        }
+      }
     });
   };
 
-  handleContent = (e) => {
+  handleContent = e => {
+    const state = this.state.validate.touched;
     this.setState({
       validate: {
         noteName: this.state.validate.noteName,
         content: e.target.value,
-        touch: true,
-      },
+        touched: {
+          noteName: state.noteName,
+          select: state.select,
+          content: true
+        }
+      }
     });
   };
 
@@ -118,44 +139,70 @@ export default class AddNote extends React.Component {
     });
 
     return (
-      <form className="AddNote" onSubmit={(event) => this.handleSubmit(event)}>
-        <label htmlFor="name">
-          <input
-            type="text"
-            name="name"
-            className="AddNoteInput"
-            ref={this.nameInput}
-            onChange={(e) => this.handleName(e)}
-          />
-        </label>
-        <select
-          name="folder"
-          id="folders"
-          aria-label="Folder Selections"
-          onChange={(e) => this.handleChange(e)}
-        >
-          <option value={'none'}>Select Folder</option>
-          {options}
-        </select>
-        <label htmlFor="content">
-          <input
-            type="textarea"
-            name="content"
-            className="AddNoteContent"
-            ref={this.contentInput}
-            onChange={(e) => this.handleContent(e)}
-          />
-        </label>
-        <p>{this.state.validate.touch && this.validateName()}</p>
-        <p>{this.state.validate.touch && this.validateContent()}</p>
-        <p>{this.state.validate.touch && this.validateSelect()}</p>
-        <button
-          type="submit"
-          className="submitButton"
-          disabled={this.validateName() || this.validateContent() || this.validateSelect()}
-        >
-          Submit
-        </button>
+      <form className="AddNote" onSubmit={event => this.handleSubmit(event)}>
+        <div className="row">
+          <div className="left">
+            <label htmlFor="name">
+              <h4>Note Name</h4>
+              <input
+                type="text"
+                name="name"
+                className="AddNoteInput"
+                ref={this.nameInput}
+                onChange={e => this.handleName(e)}
+              />
+            </label>
+            <h3>
+              {this.state.validate.touched.noteName && this.validateName()}
+            </h3>
+            <br />
+            <br />
+            <label htmlFor="message">
+              <h4>Note Content</h4>
+              <textarea
+                type="textarea"
+                name="message"
+                className="AddNoteContent"
+                ref={this.contentInput}
+                onChange={e => this.handleContent(e)}
+              />
+            </label>
+            <h3>
+              {this.state.validate.touched.content && this.validateContent()}
+            </h3>
+          </div>
+
+          <div className="right">
+            <select
+              name="folder"
+              id="folders"
+              aria-label="Folder Selections"
+              className="FolderSelection"
+              onChange={e => this.handleChange(e)}
+            >
+              <option value={'none'}>Select Folder</option>
+              {options}
+            </select>
+            <h3 className="bug">
+              {this.state.validate.touched.select && this.validateSelect()}
+            </h3>
+            <br />
+            <br />
+            <button
+              type="submit"
+              className="submitButton"
+              disabled={
+                this.validateName() ||
+                this.validateContent() ||
+                this.validateSelect()
+              }
+            >
+              Submit
+            </button>
+          </div>
+        </div>
+        <br />
+        <br />
       </form>
     );
   }

@@ -1,0 +1,28 @@
+form {
+    margin-top: 20px;
+    margin-left: 12px;
+}
+
+.AddFolderInput {
+    height: 3em;
+    width: 12em;
+}
+
+.FolderSubmitButton {
+    height: 2.5em;
+    width: 6em;
+    background-color: #cacaca;
+    border-radius: 30px;
+    border: 0;
+    font-weight: bold;
+  }
+
+h3 {
+    color: azure;
+}
+
+h4 {
+    color: azure;
+    font-size: 18px;
+    font-weight: bold;
+}
